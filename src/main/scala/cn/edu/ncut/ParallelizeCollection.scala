@@ -1,3 +1,5 @@
+package cn.edu.ncut
+
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
