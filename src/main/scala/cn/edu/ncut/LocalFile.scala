@@ -11,7 +11,7 @@ object LocalFile {
     val conf = new SparkConf().setMaster("local").setAppName("LocalFile")
     val sc = new SparkContext(conf)
 
-    val lines = sc.textFile("D://spark.txt")
+    val lines = sc.textFile("D://spark//spark.txt")
     val sum = lines.map(line => line.length).reduce(_ + _)
     println("Sum is :" + sum)
   }
