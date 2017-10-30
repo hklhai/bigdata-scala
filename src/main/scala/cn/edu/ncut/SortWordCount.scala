@@ -8,7 +8,6 @@ import org.apache.spark.{SparkConf, SparkContext}
 object SortWordCount {
 
   def main(args: Array[String]): Unit = {
-
     val sc = new SparkContext(new SparkConf().setAppName("SortWordCount").setMaster("local"))
     val lines = sc.textFile("D://spark//spark.txt")
     lines.flatMap(e => e.split(" ")).map(e => (e, 1)).reduceByKey(_ + _).

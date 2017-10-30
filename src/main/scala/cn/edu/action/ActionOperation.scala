@@ -13,7 +13,6 @@ object ActionOperation {
     val numbersRDD = sc.parallelize(numbers)
     val resRDD = numbersRDD.reduce(_ + _)
     println(resRDD)
-
   }
 
   def collect(): Unit = {
@@ -58,7 +57,6 @@ object ActionOperation {
     val numRDD = sc.parallelize(numbers)
     val res = numRDD.countByKey()
     println(res)
-
   }
 
   def main(args: Array[String]): Unit = {
@@ -70,8 +68,8 @@ object ActionOperation {
 
     //    take()
 
-    saveAsTextFile()
+//    saveAsTextFile()
 
-    //    countByKey()
+        countByKey()
   }
 }

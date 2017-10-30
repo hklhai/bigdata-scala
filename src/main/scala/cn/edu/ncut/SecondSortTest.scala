@@ -8,15 +8,12 @@ import org.apache.spark.{SparkConf, SparkContext}
 object SecondSortTest {
 
   def main(args: Array[String]): Unit = {
-
     val sc = new SparkContext(new SparkConf().setMaster("local").setAppName("SecondSortTest"))
     val numRDD = sc.textFile("D://spark//sort.txt")
     val tup = numRDD.map(e => {
       Tuple2(new SecondSortKey(e.split(" ")(0).toInt, e.split(" ")(1).toInt), e)
     })
     tup.sortByKey().map(e => e._2).foreach(e => println(e))
-
   }
-
 
 }

@@ -12,7 +12,6 @@ object Top3 {
     val sc = new SparkContext(new SparkConf().setAppName("Top3").setMaster("local"))
     val top = sc.textFile("D://spark//top.txt")
     top.map(e => (e.toInt,e)).sortByKey(false).take(3).foreach(e => println(e._2))
-
   }
 
 }
