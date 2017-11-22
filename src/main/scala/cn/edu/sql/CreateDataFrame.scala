@@ -14,7 +14,6 @@ object CreateDataFrame {
     val sqlContext = new SQLContext(sc)
     val df = sqlContext.read.json("hdfs://spark01:9000/students.json")
     df.show()
-
   }
 
 }

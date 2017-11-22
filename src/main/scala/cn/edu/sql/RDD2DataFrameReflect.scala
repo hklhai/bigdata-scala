@@ -11,7 +11,6 @@ import org.apache.spark.{SparkConf, SparkContext}
   */
 object RDD2DataFrameReflect extends App {
 
-
   val sc = new SparkContext(
     new SparkConf().setMaster("local").setAppName("RDD2DataFrameReflect"))
 
@@ -57,5 +56,4 @@ object RDD2DataFrameReflect extends App {
     Student(map("id").toString.toInt, map("name").toString, map("age").toString.toInt)
   }).collect().foreach(e => println(e.id + ":" + e.name + ":" + e.age))
   println("==================RDD getValuesMap end=================")
-
 }

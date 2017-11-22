@@ -22,7 +22,5 @@ object DataFrameOperation {
     df.filter(df.col("age") > 18).show()
 
     df.groupBy(df.col("age")).count().show()
-
   }
-
 }
