@@ -17,5 +17,4 @@ object SpecifyOption {
     nameAndAge.show()
     nameAndAge.write.save("D://spark//dataframe//people_scala")
   }
-
 }

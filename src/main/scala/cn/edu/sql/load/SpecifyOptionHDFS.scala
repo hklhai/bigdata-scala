@@ -17,5 +17,4 @@ object SpecifyOptionHDFS {
     nameAndAge.show()
     nameAndAge.write.save("hdfs://spark01:9000/sql-load/people_scala")
   }
-
 }
