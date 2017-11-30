@@ -6,7 +6,6 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 /**
   * Created by Ocean lin on 2017/11/28.
   */
-// TODO: 2017/11/28 输出为字符串的位置，而不是字符串的值
 object TransformBlackList {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
@@ -14,31 +13,35 @@ object TransformBlackList {
       .setAppName("TransformBlackList")
     val ssc = new StreamingContext(conf, Seconds(5))
 
-    val blackList = Array(("tom", true))
-    val blackListRDD = ssc.sparkContext.parallelize(blackList, 5)
+    val blacklist = Array(("tom", true))
+    val blacklistRDD = ssc.sparkContext.parallelize(blacklist, 5)
 
-    val userClickDStream = ssc.socketTextStream("spark01", 9999)
+    val adsClickLogDStream = ssc.socketTextStream("spark01", 9999)
+    val userAdsClickLogDStream = adsClickLogDStream
+      .map { adsClickLog => (adsClickLog.split(" ")(1), adsClickLog) }
 
-    val useClick = userClickDStream.map(e => {
-      val line = e.split(" ")
-      (line(1), line)
-    })
-
-    val logRDD = useClick.transform(e => {
-      val joinRDD = e.leftOuterJoin(blackListRDD)
-      val filter = joinRDD.filter(e => {
-        println(e._2._2.getOrElse(false))
-        if (e._2._2.getOrElse(false)) false else true // 存在值就表示在黑名单中
+    val validAdsClickLogDStream = userAdsClickLogDStream.transform(userAdsClickLogRDD => {
+      val joinedRDD = userAdsClickLogRDD.leftOuterJoin(blacklistRDD)
+      val filteredRDD = joinedRDD.filter(tuple => {
+        if (tuple._2._2.getOrElse(false)) {
+          false
+        } else {
+          true
+        }
       })
-      val validRDD = filter.map(e => {
-        println(e._2._1)
-        e._2._1
-      }
-      )
-      validRDD
+      val validAdsClickLogRDD = filteredRDD.map(tuple => tuple._2._1)
+      val ui = validAdsClickLogRDD.collect()
+      if (ui.length > 0)
+        println(ui(0))
+      validAdsClickLogRDD
     })
-
-    logRDD.print()
+    // TODO 输出两次
+    //    validAdsClickLogDStream.foreach(e => {
+    //      val x = e.collect()
+    //      if (x.length > 0)
+    //        println(x(0))
+    //    })
+    validAdsClickLogDStream.print()
 
     ssc.start()
     ssc.awaitTermination()
